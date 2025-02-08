@@ -3,6 +3,10 @@
     {
       "source": "/(.*)",
       "destination": "/"
+    },
+    {
+      "source": "/api/:match*",
+      "destination": "https://api-anikii.onrender.com/:match*"
     }
   ]
 }
