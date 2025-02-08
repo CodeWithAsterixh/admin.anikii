@@ -8,7 +8,6 @@ export default async function handler(req, res) {
     }
     const formattedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
     const apiUrl = `https://api-anikii.onrender.com${formattedEndpoint}`
-    console.log(`Forwarding request to: ${apiUrl}`)
 
     const response = await axios.get(apiUrl)
     res.status(200).json(response.data)
