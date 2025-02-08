@@ -4,14 +4,14 @@ import NavBar from './components/NavBar.vue'
 import { onMounted } from 'vue'
 import { useFilesStore } from './store'
 
-const { loadFiles } = useFilesStore()
+const { loadFiles, $state } = useFilesStore()
 onMounted(() => {
-  loadFiles()
+  loadFiles() // Ensure it loads on first mount
 })
 </script>
 
 <template>
   <NavBar />
 
-  <RouterView />
+  <RouterView v-if="$state.files" />
 </template>

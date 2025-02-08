@@ -1,69 +1,57 @@
 <script setup lang="ts">
-import type { _fileInfo } from '@/_types/_fileInfo'
+import type { AnimeListItem } from '@/_types/_filePageItem'
+import { downloadJSON } from '@/helpers/downloadContent'
+import { useFilesStore } from '@/store'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import ModelComponent from './ModelComponent.vue'
-import { downloadJSON } from '@/helpers/downloadContent'
-import type { PagesStructure } from '@/_types/_filePageItem'
-import { makeQuery } from '@/helpers/makeQuery'
 
-const { data } = defineProps<{ data?: _fileInfo }>()
+const { setCurrentlyViewed } = useFilesStore()
+const { data, fileName, link } = defineProps<{
+  data?: AnimeListItem[]
+  fileName?: string
+  link?: string
+}>()
 const showModal = ref(false)
-const modalName = ref(data?.name)
+const modalName = ref(fileName)
 const handleDownload = async () => {
-  try {
-    const fileRes = await makeQuery(`/listTmp/${data?.name.replace('.json', '')}`)
-    const fileResData: PagesStructure | string[] = fileRes.data[0].data
-    if (fileRes.data[0].meta) {
-      downloadJSON(fileResData, `${modalName.value}.json`)
-    }
-    // downloadJSON(fileResData, `${modalName.value}.json`)
-  } catch (error) {
-    console.error(error)
-  } finally {
+  if (data) {
+    downloadJSON(data, `${modalName.value}.json`)
     showModal.value = false
   }
 }
 </script>
 <template>
   <RouterLink
-    :to="`/files/${data?.name.replace('.json', '')}`"
+    :to="`${link}`"
+    @click="setCurrentlyViewed(data)"
     class="flex flex-col gap-2 items-center shadow-md rounded-md overflow-hidden bg-neutral-900"
   >
     <span class="h-44 w-full bg-neutral-100/30 relative isolate">
       <img
-        v-if="data?.thumbnail"
-        :src="data.thumbnail"
-        :alt="data?.name"
+        v-if="data && data[0].coverImage.cover_image"
+        :src="data[0].coverImage.cover_image"
+        :alt="fileName"
         class="size-full object-cover object-center"
       />
       <span v-else class="size-full flex flex-col gap-1 items-center justify-center">
         <i class="pi pi-file text-3xl"></i>
-        <b class="text-xs">{{ data?.type }}</b>
+        <b class="text-xs">content</b>
       </span>
       <i
         @click.stop.prevent="showModal = true"
         class="pi pi-download absolute bg-neutral-900 p-2 bottom-0 right-0 block z-20 text-xs rounded-tl-md"
       ></i>
       <span class="absolute bg-neutral-900 p-2 top-0 right-0 block z-20 text-xs rounded-bl-md"
-        >Total: {{ data?.total }}</span
-      >
-      <span class="absolute bg-neutral-900 p-2 top-0 left-0 block z-20 text-xs rounded-br-md"
-        >{{ data?.file_size }}kb</span
-      >
-      <span
-        v-if="data?.pages"
-        class="absolute bg-neutral-900 p-2 bottom-0 left-0 block z-20 text-xs rounded-tr-md"
-        >{{ data?.pages }} Page{{ data?.pages > 1 ? 's' : null }}</span
+        >contents: {{ data?.length }}</span
       >
     </span>
 
     <div class="w-full h-fit flex flex-col gap-2 px-1 pb-2">
-      <b class="w-full line-clamp-2 text-sm sm:text-base text-center break-all">{{
-        data?.name.replace('.json', '')
-      }}</b>
+      <b class="w-full line-clamp-2 text-sm sm:text-base text-center break-all">{{ fileName }}</b>
     </div>
   </RouterLink>
+
   <ModelComponent :is-open="showModal" @close="showModal = false">
     <div class="flex flex-col gap-4 p-4">
       <div class="w-full flex gap-2 items-center flex-col">
@@ -71,14 +59,14 @@ const handleDownload = async () => {
 
         <span class="block w-fit h-fit max-w-full">
           <img
-            v-if="data?.thumbnail"
-            :src="data?.thumbnail"
+            v-if="data && data[0].coverImage.cover_image"
+            :src="data[0].coverImage.cover_image"
             alt=""
             class="max-h-56 object-contain object-center rounded-md"
           />
           <span v-else class="size-full w-28 h-64 flex flex-col gap-1 items-center justify-center">
             <i class="pi pi-file text-3xl"></i>
-            <b class="text-xs">{{ data?.type }}</b>
+            <b class="text-xs">json</b>
           </span>
         </span>
       </div>

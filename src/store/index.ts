@@ -1,4 +1,5 @@
 import type { _fileInfo } from '@/_types/_fileInfo'
+import type { AnimeListItem } from '@/_types/_filePageItem'
 import { makeQuery } from '@/helpers/makeQuery'
 import { defineStore } from 'pinia'
 
@@ -6,6 +7,7 @@ export const useFilesStore = defineStore('fileStore', {
   state: () => {
     return {
       files: [] as _fileInfo[],
+      currentlyViewed: undefined as AnimeListItem[] | undefined,
     }
   },
   actions: {
@@ -26,6 +28,9 @@ export const useFilesStore = defineStore('fileStore', {
         // let the form component display the error
         return error
       }
+    },
+    setCurrentlyViewed(animeList?: AnimeListItem[]) {
+      this.currentlyViewed = animeList
     },
   },
 })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const mobileMenu = reactive({
   shown: false,
@@ -19,18 +20,26 @@ const toggleMenu = () => {
 }
 </script>
 <template>
-  <header class="w-full bg-neutral-700 p-2 flex items-center justify-between">
+  <header
+    class="w-full bg-neutral-700 p-2 flex items-center justify-between sticky top-0 z-20 shadow-md"
+  >
     <!-- logo -->
     <strong class="text-lg">Anikii Archive</strong>
     <nav class="hidden min-[498px]:flex items-center gap-2">
-      <a href="#" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
-        >Home</a
+      <RouterLink
+        to="/"
+        class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
+        >Home</RouterLink
       >
-      <a href="#" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
-        >Files</a
+      <RouterLink
+        to="/files"
+        class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
+        >Files</RouterLink
       >
-      <a href="#" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
-        >Contents</a
+      <RouterLink
+        to="#"
+        class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
+        >Contents</RouterLink
       >
     </nav>
 
@@ -49,12 +58,16 @@ const toggleMenu = () => {
         <strong class="text-lg">Anikii Archive</strong>
       </div>
       <nav class="w-full flex flex-col gap-2 px-2">
-        <a href="#" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md">Home</a>
-        <a href="#" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md"
-          >Files</a
+        <RouterLink to="/" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md"
+          >Home</RouterLink
         >
-        <a href="#" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md"
-          >Contents</a
+        <RouterLink
+          to="/files"
+          class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md"
+          >Files</RouterLink
+        >
+        <RouterLink to="#" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md"
+          >Contents</RouterLink
         >
       </nav>
     </aside>
