@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue'
 import { onMounted } from 'vue'
 import { useFilesStore } from './store'
-import IsEmpty from './components/isEmpty.vue'
+import IsEmpty from './components/IsEmpty.vue'
 import LoadingComponent from './components/LoadingComponent.vue'
 import ErrorComponent from './components/ErrorComponent.vue'
 
