@@ -8,10 +8,13 @@ export const useFilesStore = defineStore('fileStore', {
     return {
       files: [] as _fileInfo[],
       currentlyViewed: undefined as AnimeListItem[] | undefined,
+      status: 'loading' as 'loading' | 'done' | 'error',
+      isEmpty: false,
     }
   },
   actions: {
     async loadFiles() {
+      this.status = 'loading'
       try {
         const res = await makeQuery('/listTmp')
         const fileNames: string[] = res.data[0].files
@@ -22,11 +25,17 @@ export const useFilesStore = defineStore('fileStore', {
             return fileResData.meta
           }),
         ).then((arr: _fileInfo[]) => {
+          if (arr.length <= 0) {
+            this.isEmpty = true
+          }
           this.files = arr
+          this.status = 'done'
         })
       } catch (error) {
         // let the form component display the error
+        this.status = 'error'
         return error
+      } finally {
       }
     },
     setCurrentlyViewed(animeList?: AnimeListItem[]) {
