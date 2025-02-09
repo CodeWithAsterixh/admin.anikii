@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import router from '@/router'
 import { reactive } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 
 const mobileMenu = reactive({
   shown: false,
   animation: 'in' as 'in' | 'out',
 })
+
+const route = useRoute()
+const paths = route.path.split('/').filter((p) => p !== '')
+
+const isNested = paths.length >= 1
 
 const toggleMenu = () => {
   if (mobileMenu.shown) {
@@ -18,28 +24,44 @@ const toggleMenu = () => {
     mobileMenu.animation = 'in'
   }
 }
+const goBack = () => {
+  if (isNested) {
+    paths.pop()
+    router.push(`/${paths.join('/')}`)
+  }
+}
 </script>
 <template>
   <header
     class="w-full bg-neutral-700 p-2 flex items-center justify-between sticky top-0 z-20 shadow-md"
   >
     <!-- logo -->
-    <strong class="text-lg">Anikii Archive</strong>
+    <strong class="text-lg">
+      <button
+        v-if="route.path.split('/').filter((p) => p !== '').length >= 1"
+        @click="goBack"
+        class="w-fit p-0 text-lg !mr-4"
+      >
+        <i class="pi pi-arrow-left"></i>
+      </button>
+      Anikii Archive</strong
+    >
     <nav class="hidden min-[498px]:flex items-center gap-2">
       <RouterLink
         to="/"
-        class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
+        :class="[
+          'bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md',
+          route.path === '/' ? 'bg-neutral-800' : 'bg-neutral-600 hover:bg-neutral-800',
+        ]"
         >Home</RouterLink
       >
       <RouterLink
         to="/files"
-        class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
+        :class="[
+          'duration-300 p-2 px-3 rounded-md',
+          route.path.includes('/files') ? 'bg-neutral-800' : 'bg-neutral-600 hover:bg-neutral-800',
+        ]"
         >Files</RouterLink
-      >
-      <RouterLink
-        to="#"
-        class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 px-3 rounded-md"
-        >Contents</RouterLink
       >
     </nav>
 
@@ -58,16 +80,23 @@ const toggleMenu = () => {
         <strong class="text-lg">Anikii Archive</strong>
       </div>
       <nav class="w-full flex flex-col gap-2 px-2">
-        <RouterLink to="/" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md"
+        <RouterLink
+          to="/"
+          :class="[
+            'bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md',
+            route.path === '/' ? 'bg-neutral-800' : 'bg-neutral-600 hover:bg-neutral-800',
+          ]"
           >Home</RouterLink
         >
         <RouterLink
           to="/files"
-          class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md"
+          :class="[
+            'bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md',
+            route.path.includes('/files')
+              ? 'bg-neutral-800'
+              : 'bg-neutral-600 hover:bg-neutral-800',
+          ]"
           >Files</RouterLink
-        >
-        <RouterLink to="#" class="bg-neutral-600 hover:bg-neutral-800 duration-300 p-2 rounded-md"
-          >Contents</RouterLink
         >
       </nav>
     </aside>
