@@ -1,19 +1,26 @@
 <script setup lang="ts">
 import type { AnimeListItem } from '@/_types/_filePageItem'
 import { ref } from 'vue'
-import ModelComponent from './ModelComponent.vue'
 import { downloadJSON } from '@/helpers/downloadContent'
+import DownloadModal from './DownloadModal.vue'
+import ModelComponent from './ModelComponent.vue'
 
 const { data } = defineProps<{ data: AnimeListItem }>()
 const showModal = ref(false)
-const modalName = ref(`${data.title.split(' ').join('_')}-(json_data)`)
-const handleDownload = () => {
-  downloadJSON(data, `${modalName.value}.json`)
+const handleDownload = (name: string) => {
+  downloadJSON(data, `${name}.json`)
   showModal.value = false
+}
+
+const openModal = () => {
+  showModal.value = true
 }
 </script>
 <template>
-  <div class="flex flex-col gap-2 items-center shadow-md rounded-md overflow-hidden bg-neutral-900">
+  <div
+    @click="openModal"
+    class="flex flex-col gap-2 items-center shadow-md rounded-md overflow-hidden bg-neutral-900"
+  >
     <span class="h-44 w-full bg-neutral-100/30 relative isolate">
       <img
         v-if="data.coverImage.cover_image"
@@ -25,10 +32,14 @@ const handleDownload = () => {
         <i class="pi pi-file text-3xl"></i>
         <b class="text-xs">{{ data.format }}</b>
       </span>
-      <i
-        @click="showModal = true"
-        class="pi pi-download absolute bg-neutral-900 p-2 bottom-0 right-0 block z-20 text-xs rounded-tl-md"
-      ></i>
+      <DownloadModal
+        :file-name="`${data.title.split(' ').join('_')}-(json_data)`"
+        :handle-download="handleDownload"
+        :file="{
+          type: 'content',
+          thumbnail: data.coverImage.cover_image,
+        }"
+      />
       <span class="absolute bg-neutral-900 p-2 top-0 right-0 block z-20 text-xs rounded-bl-md"
         >status: {{ data.status }}</span
       >
@@ -44,32 +55,75 @@ const handleDownload = () => {
 
   <ModelComponent :is-open="showModal" @close="showModal = false">
     <div class="flex flex-col gap-4 p-4">
-      <div class="w-full flex gap-2 items-center flex-col">
-        <span class="text-lg">Download the json data of this content</span>
-
-        <span class="block w-fit h-fit max-w-full">
+      <div class="w-full flex gap-2 items-center flex-col relative isolate pt-12 px-2">
+        <span
+          class="text-lg w-full h-24 bg-neutral-600 absolute top-0 z-0 border-2 rounded-md"
+          :style="{
+            borderColor: data.coverImage.cover_image_color
+              ? data.coverImage.cover_image_color
+              : '#171717',
+          }"
+        >
           <img
-            :src="data.coverImage.cover_image"
+            v-if="data.coverImage.bannerImage"
+            :src="data.coverImage.bannerImage"
             alt=""
-            class="max-h-56 object-contain object-center rounded-md"
+            class="size-full object-cover object-center rounded-md"
           />
         </span>
-      </div>
-      <label for="name" class="flex flex-col gap-2">
-        <span class="text-lg">Save as:</span>
-        <input
-          type="text"
-          id="name"
-          class="w-full p-2 border-2 border-neutral-500 rounded-md"
-          v-model="modalName"
-        />
-      </label>
 
-      <div class="w-full flex gap-3 items-center justify-center *:cursor-pointer">
-        <button class="w-full p-2 bg-neutral-600 rounded-md" @click="showModal = false">
-          cancel
-        </button>
-        <button @click="handleDownload" class="w-full p-2 bg-black rounded-md">Save</button>
+        <div class="w-full">
+          <span
+            :style="{
+              borderColor: data.coverImage.cover_image_color
+                ? data.coverImage.cover_image_color
+                : '#171717',
+            }"
+            class="block w-fit h-fit max-w-16 border-2 rounded-md float-left !mr-1 relative z-10"
+          >
+            <img
+              v-if="data.coverImage.cover_image"
+              :src="data.coverImage.cover_image"
+              alt=""
+              class="max-h-56 object-contain object-center rounded-md"
+            />
+            <span
+              v-else
+              class="size-full w-28 h-64 flex flex-col gap-1 items-center justify-center"
+            >
+              <i class="pi pi-file text-3xl"></i>
+              <b class="text-xs">json</b>
+            </span>
+          </span>
+          <h1 class="p-0 text-neutral-200 m-0 font-bold h-full pt-12 relative z-10">
+            {{ data.title }}
+          </h1>
+        </div>
+
+        <div class="w-full flex gap-2 !mt-4 flex-wrap">
+          <span class="w-fit px-3 py-1 bg-neutral-600 rounded-full">
+            {{ data.format }}
+          </span>
+          <span class="w-fit px-3 py-1 bg-neutral-600 rounded-full">
+            {{ data.status }}
+          </span>
+          <span class="w-fit px-3 py-1 bg-neutral-600 rounded-full">
+            {{ data.releaseDate }}
+          </span>
+          <span class="w-fit px-3 py-1 bg-neutral-600 rounded-full">
+            <i :class="`pi pi-thumbs-${data.averageScore > 60 ? 'up' : 'down'}-fill`"></i>
+          </span>
+        </div>
+        <div class="w-full flex items-center justify-center gap-2 !mt-4">
+          <button class="w-full p-2 bg-neutral-600 rounded-md" @click="showModal = false">
+            cancel
+          </button>
+          <a
+            :href="`https://anikii.vercel.app/anime/${data.id}`"
+            class="w-full block p-2 bg-black text-center rounded-md"
+            >View</a
+          >
+        </div>
       </div>
     </div>
   </ModelComponent>
