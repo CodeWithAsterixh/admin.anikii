@@ -49,7 +49,7 @@ function download() {
       </div>
       <label for="name" class="flex flex-col gap-2">
         <span class="text-lg">Save as:</span>
-        <div class="w-full flex gap-3 justify-between">
+        <div class="w-full flex gap-3 justify-between flex-col min-[498px]:flex-row">
           <div class="w-full flex border-2 border-neutral-500 rounded-md">
             <input type="text" id="name" class="w-full p-2 outline-none" v-model="inputVal" />
             <span class="w-fit bg-neutral-700 flex items-center px-2 justify-center"
@@ -60,7 +60,9 @@ function download() {
         </div>
       </label>
 
-      <div class="w-full flex gap-3 items-center justify-center *:cursor-pointer">
+      <div
+        class="w-full flex gap-3 items-center justify-center *:cursor-pointer flex-wrap *:basis-[100px] *:grow"
+      >
         <button class="w-full p-2 bg-neutral-600 rounded-md" @click="showModal = false">
           cancel
         </button>

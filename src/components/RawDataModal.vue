@@ -151,17 +151,13 @@ function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
 <template>
   <button
     @click.stop.prevent="showModal = true"
-    class="w-fit px-4 bg-neutral-950 rounded-md flex items-center justify-center gap-2 cursor-pointer"
+    class="w-fit px-4 py-2 bg-neutral-950 rounded-md flex items-center justify-center gap-2 cursor-pointer"
   >
     <i class="pi pi-eye text-xs"></i>
     Raw
   </button>
   <ModelComponent :is-open="showModal" @close="showModal = false">
     <div class="flex flex-col gap-4 p-4 w-fit max-w-full">
-      <!-- <div
-        class="w-full h-fit max-h-[70vh] max-w-[70vw] overflow-auto scroller text-green-400 p-4 rounded-lg flex flex-col gap-2"
-        v-html=""
-      ></div> -->
       <div
         v-html="syntaxHighlight(currentColorPalette, file)"
         class="text-white p-4 max-h-[70vh] max-w-full overflow-auto scroller whitespace-pre-wrap font-mono text-sm"
