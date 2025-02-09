@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import router from '@/router'
 import { reactive } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 
 const mobileMenu = reactive({
   shown: false,
@@ -9,6 +8,7 @@ const mobileMenu = reactive({
 })
 
 const route = useRoute()
+const router = useRouter()
 const paths = route.path.split('/').filter((p) => p !== '')
 
 const isNested = paths.length >= 1
