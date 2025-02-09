@@ -169,10 +169,12 @@ function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
         <li
           v-for="(colorKey, i) in Object.keys(jsonSyntaxPalettes)"
           :key="i"
-          class="size-10 rounded-md cursor-pointer shrink-0 snap-start"
+          class="size-10 rounded-md cursor-pointer shrink-0 snap-start border-black duration-500"
           :title="`${colorKey} palette`"
           :style="{
             backgroundColor: jsonSyntaxPalettes[colorKey]['key'],
+            borderWidth:
+              currentColorPalette.key == jsonSyntaxPalettes[colorKey]['key'] ? '5px' : '',
           }"
           @click="setCurrentColorPalette(jsonSyntaxPalettes[colorKey])"
         ></li>
