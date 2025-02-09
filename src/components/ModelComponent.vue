@@ -8,7 +8,7 @@
       >
         <div
           v-bind="$attrs"
-          class="bg-white dark:bg-neutral-900 p-6 rounded-lg shadow-lg max-w-md w-full relative"
+          class="bg-white dark:bg-neutral-900 p-6 rounded-lg shadow-lg max-w-[70vw] w-full relative"
           @click.stop
         >
           <button

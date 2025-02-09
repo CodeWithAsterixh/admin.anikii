@@ -38,6 +38,7 @@ const openModal = () => {
         :file="{
           type: 'content',
           thumbnail: data.coverImage.cover_image,
+          contents: data,
         }"
       />
       <span class="absolute bg-neutral-900 p-2 top-0 right-0 block z-20 text-xs rounded-bl-md"

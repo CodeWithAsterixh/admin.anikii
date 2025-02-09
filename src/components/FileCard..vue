@@ -5,20 +5,27 @@ import { downloadJSON } from '@/helpers/downloadContent'
 import { makeQuery } from '@/helpers/makeQuery'
 import { RouterLink } from 'vue-router'
 import DownloadModal from './DownloadModal.vue'
+import { onMounted, ref } from 'vue'
 
 const { data } = defineProps<{ data?: _fileInfo }>()
+const contentData = ref<PagesStructure | string[]>()
 const handleDownload = async (name: string) => {
+  if (contentData.value) {
+    downloadJSON(contentData.value, `${name}.json`)
+  }
+}
+onMounted(async () => {
   try {
     const fileRes = await makeQuery(`/listTmp/${data?.name.replace('.json', '')}`)
     const fileResData: PagesStructure | string[] = fileRes.data[0].data
     if (fileRes.data[0].meta) {
-      downloadJSON(fileResData, `${name}.json`)
+      contentData.value = fileResData
     }
     // downloadJSON(fileResData, `${modalName.value}.json`)
   } catch (error) {
     console.error(error)
   }
-}
+})
 </script>
 <template>
   <RouterLink
@@ -42,6 +49,7 @@ const handleDownload = async (name: string) => {
         :file="{
           type: data?.type ? data?.type : '',
           thumbnail: data?.thumbnail ? data.thumbnail : '',
+          contents: contentData,
         }"
       />
       <span class="absolute bg-neutral-900 p-2 top-0 right-0 block z-20 text-xs rounded-bl-md"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ModelComponent from './ModelComponent.vue'
+import RawDataModal from './RawDataModal.vue'
 
 const {
   fileName = '',
@@ -12,10 +13,11 @@ const {
   file: {
     thumbnail?: string
     type: string
+    contents?: object
   }
 }>()
 const showModal = ref(false)
-const inputVal = ref(fileName)
+const inputVal = ref(fileName.replace('.json', ''))
 
 function download() {
   handleDownload(inputVal.value)
@@ -47,12 +49,15 @@ function download() {
       </div>
       <label for="name" class="flex flex-col gap-2">
         <span class="text-lg">Save as:</span>
-        <input
-          type="text"
-          id="name"
-          class="w-full p-2 border-2 border-neutral-500 rounded-md"
-          v-model="inputVal"
-        />
+        <div class="w-full flex gap-3 justify-between">
+          <div class="w-full flex border-2 border-neutral-500 rounded-md">
+            <input type="text" id="name" class="w-full p-2 outline-none" v-model="inputVal" />
+            <span class="w-fit bg-neutral-700 flex items-center px-2 justify-center"
+              >.{{ file.type }}</span
+            >
+          </div>
+          <RawDataModal :file="file.contents" />
+        </div>
       </label>
 
       <div class="w-full flex gap-3 items-center justify-center *:cursor-pointer">
