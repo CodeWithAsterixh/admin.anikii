@@ -157,7 +157,7 @@ function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
     Raw
   </button>
   <ModelComponent :is-open="showModal" @close="showModal = false">
-    <div class="flex flex-col gap-4 p-4 w-fit max-w-full">
+    <div class="flex flex-col gap-4 py-4 px-1 sm:px-4 w-fit max-w-full">
       <div
         v-html="syntaxHighlight(currentColorPalette, file)"
         class="text-white p-4 max-h-[70vh] max-w-full overflow-auto scroller whitespace-pre-wrap font-mono text-sm"
