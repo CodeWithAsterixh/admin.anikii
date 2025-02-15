@@ -27,7 +27,7 @@ async function store() {
         data: file,
       })
 
-      loadFiles(`${fileName}.json`)
+      loadFiles()
 
       error.value = false
       showModal.value = false
@@ -47,7 +47,7 @@ async function deleteFile() {
         name: `${fileName}.json`,
       })
 
-      loadFile(`${fileName}.json`)
+      loadFiles()
 
       error.value = false
       showModal.value = false
