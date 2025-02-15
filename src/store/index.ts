@@ -38,6 +38,21 @@ export const useFilesStore = defineStore('fileStore', {
       } finally {
       }
     },
+    async loadFile(name: string) {
+      this.status = 'loading'
+      try {
+        const fileRes = await makeQuery(`/listTmp/${name.replace('.json', '')}`)
+        const fileResDataMeta = fileRes.data[0].meta
+        const filtered = this.files.filter((item) => item.name !== name)
+        this.files = [...filtered, fileResDataMeta]
+      } catch (error) {
+        // let the form component display the error
+        this.status = 'error'
+        return error
+      } finally {
+        this.status = 'done'
+      }
+    },
     setCurrentlyViewed(animeList?: AnimeListItem[]) {
       this.currentlyViewed = animeList
     },

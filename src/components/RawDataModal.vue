@@ -3,41 +3,43 @@ import { ref } from 'vue'
 import ModelComponent from './ModelComponent.vue'
 import type { JsonSyntaxPalette, JsonSyntaxPalettes } from '@/_types/_colorPallete'
 
-const { file } = defineProps<{
+const { file, title } = defineProps<{
   file?: object
+  title?: string
 }>()
 const showModal = ref(false)
+const currentPaletteName = ref('dark_mode_friendly')
 const jsonSyntaxPalettes: JsonSyntaxPalettes = {
   // Original 5 palettes
-  defaultHighContrast: {
+  default_high_contrast: {
     key: '#60a5fa', // Blue
     string: '#facc15', // Yellow
     number: '#f87171', // Red
     boolean: '#c084fc', // Purple
     null: '#9ca3af', // Gray
   },
-  softPastel: {
+  soft_pastel: {
     key: '#7dd3fc', // Sky Blue
     string: '#fb7185', // Rose
     number: '#a3e635', // Lime
     boolean: '#f472b6', // Pink
     null: '#6b7280', // Gray
   },
-  darkModeFriendly: {
+  dark_mode_friendly: {
     key: '#67e8f9', // Cyan
     string: '#6ee7b7', // Emerald
     number: '#fdba74', // Orange
     boolean: '#f0abfc', // Fuchsia
     null: '#d1d5db', // Light Gray
   },
-  cyberpunkNeon: {
+  cyberpunk_neon: {
     key: '#2dd4bf', // Teal
     string: '#d9f99d', // Lime
     number: '#f472b6', // Pink
     boolean: '#818cf8', // Indigo
     null: '#6b7280', // Gray
   },
-  monochromeMinimal: {
+  monochrome_minimal: {
     key: '#d1d5db', // Light Gray
     string: '#9ca3af', // Gray
     number: '#6b7280', // Dark Gray
@@ -46,70 +48,70 @@ const jsonSyntaxPalettes: JsonSyntaxPalettes = {
   },
 
   // 10 New Palettes
-  oceanBreeze: {
+  ocean_breeze: {
     key: '#0284c7', // Deep Blue
     string: '#38bdf8', // Light Blue
     number: '#0ea5e9', // Sky Blue
     boolean: '#06b6d4', // Aqua
     null: '#64748b', // Slate
   },
-  sunsetGlow: {
+  sunset_glow: {
     key: '#fb923c', // Orange
     string: '#f43f5e', // Bright Pink
     number: '#ef4444', // Red
     boolean: '#eab308', // Gold
     null: '#9ca3af', // Gray
   },
-  forestMystic: {
+  forest_mystic: {
     key: '#16a34a', // Green
     string: '#22c55e', // Lime Green
     number: '#84cc16', // Olive Green
     boolean: '#65a30d', // Dark Olive
     null: '#4d7c0f', // Forest Green
   },
-  twilightDreams: {
+  twilight_dreams: {
     key: '#7c3aed', // Purple
     string: '#9333ea', // Violet
     number: '#c026d3', // Magenta
     boolean: '#e879f9', // Pinkish Purple
     null: '#6b7280', // Gray
   },
-  retroWave: {
+  retro_wave: {
     key: '#f87171', // Red
     string: '#facc15', // Yellow
     number: '#fb7185', // Pink
     boolean: '#7dd3fc', // Sky Blue
     null: '#94a3b8', // Soft Gray
   },
-  lavaFlow: {
+  lava_flow: {
     key: '#b91c1c', // Deep Red
     string: '#f97316', // Orange
     number: '#ea580c', // Burnt Orange
     boolean: '#facc15', // Yellow
     null: '#57534e', // Charcoal
   },
-  auroraBorealis: {
+  aurora_borealis: {
     key: '#4ade80', // Light Green
     string: '#34d399', // Mint Green
     number: '#06b6d4', // Aqua Blue
     boolean: '#3b82f6', // Bright Blue
     null: '#64748b', // Slate Gray
   },
-  candyPop: {
+  candy_pop: {
     key: '#db2777', // Hot Pink
     string: '#f472b6', // Soft Pink
     number: '#fb923c', // Neon Orange
     boolean: '#e879f9', // Bubblegum Purple
     null: '#6b7280', // Gray
   },
-  midnightHorizon: {
+  midnight_horizon: {
     key: '#1e40af', // Dark Blue
     string: '#2563eb', // Bright Blue
     number: '#3b82f6', // Sky Blue
     boolean: '#9333ea', // Violet
     null: '#475569', // Dark Slate
   },
-  emeraldCity: {
+  emerald_city: {
     key: '#059669', // Emerald Green
     string: '#10b981', // Mint Green
     number: '#34d399', // Soft Aqua
@@ -118,9 +120,10 @@ const jsonSyntaxPalettes: JsonSyntaxPalettes = {
   },
 }
 
-const currentColorPalette = ref(jsonSyntaxPalettes.darkModeFriendly)
+const currentColorPalette = ref(jsonSyntaxPalettes['dark_mode_friendly'])
 
-function setCurrentColorPalette(palette: JsonSyntaxPalette) {
+function setCurrentColorPalette(palette: JsonSyntaxPalette, key: string) {
+  currentPaletteName.value = key
   currentColorPalette.value = palette
 }
 function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
@@ -157,11 +160,16 @@ function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
     Raw
   </button>
   <ModelComponent :is-open="showModal" @close="showModal = false">
-    <div class="flex flex-col gap-4 py-4 px-1 sm:px-4 w-fit max-w-full">
-      <div
-        v-html="syntaxHighlight(currentColorPalette, file)"
-        class="text-white p-4 max-h-[70vh] max-w-full overflow-auto scroller whitespace-pre-wrap font-mono text-sm"
-      ></div>
+    <div class="w-full !mb-4">
+      <h2>{{ title }}</h2>
+    </div>
+    <div class="flex flex-col gap-4 w-fit max-w-full">
+      <div class="w-full p-4 bg-neutral-950 rounded-md">
+        <div
+          v-html="syntaxHighlight(currentColorPalette, file)"
+          class="text-white max-h-[70vh] max-w-full overflow-auto scroller whitespace-pre-wrap font-mono text-sm"
+        ></div>
+      </div>
 
       <ul
         class="w-full p-2 flex items-center gap-2 overflow-x-auto no_scroller snap-x snap-mandatory"
@@ -176,9 +184,15 @@ function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
             borderWidth:
               currentColorPalette.key == jsonSyntaxPalettes[colorKey]['key'] ? '5px' : '',
           }"
-          @click="setCurrentColorPalette(jsonSyntaxPalettes[colorKey])"
+          @click="setCurrentColorPalette(jsonSyntaxPalettes[colorKey], colorKey)"
         ></li>
       </ul>
+      <span class="block text-neutral-500"
+        >Selected color template:
+        <b class="capitalize text-neutral-100">{{
+          currentPaletteName.split('_').join(' ')
+        }}</b></span
+      >
     </div>
   </ModelComponent>
 </template>

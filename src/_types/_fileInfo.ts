@@ -9,4 +9,5 @@ export interface _fileInfo {
   pages: number
   total: number
   thumbnail: string | null
+  from: 'temp' | 'db'
 }

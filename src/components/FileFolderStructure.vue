@@ -2,15 +2,17 @@
 import type { AnimeListItem } from '@/_types/_filePageItem'
 import { downloadJSON } from '@/helpers/downloadContent'
 import { useFilesStore } from '@/store'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import DownloadModal from './DownloadModal.vue'
 
+const router = useRoute()
 const { setCurrentlyViewed } = useFilesStore()
 const { data, fileName, link } = defineProps<{
   data?: AnimeListItem[]
   fileName?: string
   link?: string
 }>()
+
 const handleDownload = async (name: string) => {
   if (data) {
     downloadJSON(data, `${name}.json`)
@@ -35,10 +37,11 @@ const handleDownload = async (name: string) => {
         <b class="text-xs">content</b>
       </span>
       <DownloadModal
+        v-if="data"
         :file-name="fileName ? fileName : ''"
         :handle-download="handleDownload"
         :file="{
-          type: 'content',
+          type: 'json',
           thumbnail: data && data[0].coverImage.cover_image ? data[0].coverImage.cover_image : '',
           contents: data,
         }"
@@ -49,7 +52,9 @@ const handleDownload = async (name: string) => {
     </span>
 
     <div class="w-full h-fit flex flex-col gap-2 px-1 pb-2">
-      <b class="w-full line-clamp-2 text-sm sm:text-base text-center break-all">{{ fileName }}</b>
+      <b class="w-full line-clamp-2 text-sm sm:text-base text-center break-all">{{
+        fileName?.replace(`${router.params.name}`, '').split('_').join(' ')
+      }}</b>
     </div>
   </RouterLink>
 </template>

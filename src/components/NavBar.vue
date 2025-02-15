@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 
 const mobileMenu = reactive({
@@ -9,10 +9,7 @@ const mobileMenu = reactive({
 
 const route = useRoute()
 const router = useRouter()
-const paths = route.path.split('/').filter((p) => p !== '')
-
-const isNested = paths.length >= 1
-
+const atBeginning = ref(true)
 const toggleMenu = () => {
   if (mobileMenu.shown) {
     mobileMenu.animation = 'out'
@@ -25,11 +22,12 @@ const toggleMenu = () => {
   }
 }
 const goBack = () => {
-  if (isNested) {
-    paths.pop()
-    router.push(`/${paths.join('/')}`)
-  }
+  router.back()
+  atBeginning.value = window.history.length <= 1
 }
+onMounted(() => {
+  atBeginning.value = window.history.length <= 1
+})
 </script>
 <template>
   <header
@@ -37,11 +35,7 @@ const goBack = () => {
   >
     <!-- logo -->
     <strong class="text-lg">
-      <button
-        v-if="route.path.split('/').filter((p) => p !== '').length >= 1"
-        @click="goBack"
-        class="w-fit p-0 text-lg !mr-4"
-      >
+      <button v-if="!atBeginning" @click="goBack" class="w-fit p-0 text-lg !mr-4">
         <i class="pi pi-arrow-left"></i>
       </button>
       Anikii Archive</strong

@@ -36,7 +36,7 @@ const openModal = () => {
         :file-name="`${data.title.split(' ').join('_')}-(json_data)`"
         :handle-download="handleDownload"
         :file="{
-          type: 'content',
+          type: 'json',
           thumbnail: data.coverImage.cover_image,
           contents: data,
         }"
@@ -56,9 +56,9 @@ const openModal = () => {
 
   <ModelComponent :is-open="showModal" @close="showModal = false">
     <div class="flex flex-col gap-4 p-4">
-      <div class="w-full flex gap-2 items-center flex-col relative isolate pt-12 px-2">
+      <div class="w-full flex gap-2 items-center flex-col relative isolate pt-32 px-2">
         <span
-          class="text-lg w-full h-24 bg-neutral-600 absolute top-0 z-0 border-2 rounded-md"
+          class="text-lg w-full h-44 bg-neutral-600 absolute top-0 z-0 border-2 rounded-md"
           :style="{
             borderColor: data.coverImage.cover_image_color
               ? data.coverImage.cover_image_color
@@ -80,13 +80,13 @@ const openModal = () => {
                 ? data.coverImage.cover_image_color
                 : '#171717',
             }"
-            class="block w-fit h-fit max-w-16 border-2 rounded-md float-left !mr-1 relative z-10"
+            class="block w-fit h-fit max-w-[5rem] border-2 rounded-md float-left !mr-1 relative z-10"
           >
             <img
               v-if="data.coverImage.cover_image"
               :src="data.coverImage.cover_image"
               alt=""
-              class="max-h-56 object-contain object-center rounded-md"
+              class="object-contain object-center rounded-md"
             />
             <span
               v-else

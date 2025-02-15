@@ -2,19 +2,22 @@
 import { ref } from 'vue'
 import ModelComponent from './ModelComponent.vue'
 import RawDataModal from './RawDataModal.vue'
+import UpdateDbStorageModal from './UpdateDbStorageModal.vue'
 
 const {
   fileName = '',
   handleDownload,
   file,
+  from = 'temp',
 } = defineProps<{
   fileName: string
   handleDownload: (name: string) => void
   file: {
     thumbnail?: string
     type: string
-    contents?: object
+    contents: object
   }
+  from?: 'db' | 'temp'
 }>()
 const showModal = ref(false)
 const inputVal = ref(fileName.replace('.json', ''))
@@ -56,7 +59,7 @@ function download() {
               >.{{ file.type }}</span
             >
           </div>
-          <RawDataModal :file="file.contents" />
+          <RawDataModal :file="file.contents" :title="inputVal" />
         </div>
       </label>
 
@@ -66,7 +69,12 @@ function download() {
         <button class="w-full p-2 bg-neutral-600 rounded-md" @click="showModal = false">
           cancel
         </button>
-        <button @click="download" class="w-full p-2 bg-black rounded-md">Save</button>
+        <button @click="download" class="w-full p-2 bg-black rounded-md">Download</button>
+        <UpdateDbStorageModal
+          :type="from === 'db' ? 'delete' : 'save'"
+          :file="file.contents"
+          :file-name="inputVal"
+        />
       </div>
     </div>
   </ModelComponent>

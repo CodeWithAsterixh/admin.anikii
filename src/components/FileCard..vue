@@ -3,9 +3,9 @@ import type { _fileInfo } from '@/_types/_fileInfo'
 import type { PagesStructure } from '@/_types/_filePageItem'
 import { downloadJSON } from '@/helpers/downloadContent'
 import { makeQuery } from '@/helpers/makeQuery'
+import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import DownloadModal from './DownloadModal.vue'
-import { onMounted, ref } from 'vue'
 
 const { data } = defineProps<{ data?: _fileInfo }>()
 const contentData = ref<PagesStructure | string[]>()
@@ -16,6 +16,7 @@ const handleDownload = async (name: string) => {
 }
 onMounted(async () => {
   try {
+    console.log(data?.name)
     const fileRes = await makeQuery(`/listTmp/${data?.name.replace('.json', '')}`)
     const fileResData: PagesStructure | string[] = fileRes.data[0].data
     if (fileRes.data[0].meta) {
@@ -44,6 +45,7 @@ onMounted(async () => {
         <b class="text-xs">{{ data?.type }}</b>
       </span>
       <DownloadModal
+        v-if="contentData"
         :file-name="data?.name ? data?.name : ''"
         :handle-download="handleDownload"
         :file="{
@@ -51,6 +53,7 @@ onMounted(async () => {
           thumbnail: data?.thumbnail ? data.thumbnail : '',
           contents: contentData,
         }"
+        :from="data?.from || 'temp'"
       />
       <span class="absolute bg-neutral-900 p-2 top-0 right-0 block z-20 text-xs rounded-bl-md"
         >Total: {{ data?.total }}</span
