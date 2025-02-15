@@ -4,7 +4,6 @@ import FileCard from '@/components/FileCard..vue'
 import { useFilesStore } from '@/store'
 
 const { $state } = useFilesStore()
-console.log($state.files)
 </script>
 
 <template>
@@ -14,7 +13,7 @@ console.log($state.files)
       class="w-full flex flex-col gap-2 p-3"
     >
       <h2 class="text-lg">Saved Datas</h2>
-      <div class="w-full grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] p-2 gap-2">
+      <div class="w-full grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2">
         <FileCard
           v-for="(file, i) in $state.files.filter((f) => f.from === 'db')"
           :key="i"

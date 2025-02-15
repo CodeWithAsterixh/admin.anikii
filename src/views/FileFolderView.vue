@@ -20,7 +20,6 @@ onMounted(async () => {
       const fileRes = await makeQuery(`/listTmp/${file.name.replace('.json', '')}`)
       const fileResData: PagesStructure | string[] = fileRes.data[0].data
       fileData.data = fileResData
-      console.log(file.name)
     } catch (error) {
       console.error(error)
     }
@@ -35,7 +34,7 @@ onMounted(async () => {
   >
     <h2 class="text-lg">{{ router.params.name }}</h2>
 
-    <div class="w-full grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] p-2 gap-2">
+    <div class="w-full grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2">
       <div
         v-for="item in fileData.data"
         :key="item"

@@ -17,19 +17,17 @@ const showModal = ref(false)
 const inputVal = ref('')
 const showPass = ref(false)
 const error = ref<false | string>(false)
-const { loadFile } = useFilesStore()
+const { loadFiles } = useFilesStore()
 async function store() {
-  console.log(file)
-
   const pass = import.meta.env.VITE_PASSKEY
   if (inputVal.value === pass) {
     try {
-      const res = await axios.post('/api/savefile', {
+      await axios.post('/api/savefile', {
         name: `${fileName}.json`,
         data: file,
       })
 
-      loadFile(res.data.data.name)
+      loadFiles(`${fileName}.json`)
 
       error.value = false
       showModal.value = false
