@@ -18,7 +18,7 @@ onMounted(async () => {
   if (file) {
     try {
       const fileRes = await makeQuery(`/listTmp/${file.name.replace('.json', '')}`)
-      const fileResData: PagesStructure | string[] = fileRes.data[0].data
+      const fileResData: PagesStructure | string[] = fileRes?.data[0]?.data || []
       fileData.data = fileResData
     } catch (error) {
       console.error(error)

@@ -19,8 +19,8 @@ const handleDownload = async (name: string) => {
 onMounted(async () => {
   try {
     const fileRes = await makeQuery(`/listTmp/${data?.name.replace('.json', '')}`)
-    const fileResData: PagesStructure | string[] | AnimeListItem = fileRes.data[0].data
-    if (fileRes.data[0].meta) {
+    const fileResData: PagesStructure | string[] | AnimeListItem = fileRes?.data[0].data
+    if (fileRes?.data[0].meta) {
       contentData.value = fileResData
     }
     // downloadJSON(fileResData, `${modalName.value}.json`)

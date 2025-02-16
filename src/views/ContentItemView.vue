@@ -17,7 +17,7 @@ onMounted(async () => {
     $state.status = 'loading'
     try {
       const fileRes = await makeQuery(`/listTmp/${name}`)
-      const fileResData: PagesStructure = fileRes.data[0].data
+      const fileResData: PagesStructure = fileRes?.data[0].data
       if (Object.keys(fileResData).length === 0) {
         $state.isEmpty = true
         $state.status = 'done'
