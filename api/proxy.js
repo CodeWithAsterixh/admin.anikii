@@ -6,7 +6,8 @@ export default async function handler(req, res) {
     if (!endpoint) {
       return res.status(400).json({ error: 'Missing endpoint parameter' })
     }
-    const formattedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+    const splittedEnp = endpoint.split('/').join('/')
+    const formattedEndpoint = splittedEnp.startsWith('/') ? splittedEnp : `/${splittedEnp}`
     const apiUrl = `https://api-anikii.onrender.com${formattedEndpoint}`
 
     let response
