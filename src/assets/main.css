@@ -17,12 +17,36 @@ body {
   @apply bg-neutral-800 text-white p-0 m-0;
 }
 * {
-  @apply box-border;
+  @apply box-border duration-300;
 }
 button {
   @apply active:scale-95 duration-300 cursor-pointer;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.scroller {
+  padding: 0 10px 10px 0;
+}
+.scroller::-webkit-scrollbar {
+  background-color: oklch(0.205 0 0);
+  width: 5px;
+  height: 5px;
+}
+.scroller::-webkit-scrollbar-thumb {
+  background-color: oklch(0.708 0 0);
+  border-radius: 9999px;
+}
+.scroller::-webkit-scrollbar-track-piece {
+  background-color: oklch(0.269 0 0);
+  border-radius: 5px;
+}
+.scroller::-webkit-scrollbar-corner {
+  background-color: oklch(0.269 0 0);
+  border-bottom-right-radius: 5px;
+}
 @keyframes slideFLeft {
   from {
     left: -100%;

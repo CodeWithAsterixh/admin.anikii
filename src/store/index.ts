@@ -17,10 +17,16 @@ export const useFilesStore = defineStore('fileStore', {
       this.status = 'loading'
       try {
         const res = await makeQuery('/listTmp')
+        if (!res || !res.data || !res.data[0]) {
+          throw new Error('Response is undefined or invalid')
+        }
         const fileNames: string[] = res.data[0].files
         await Promise.all(
           fileNames.map(async (name) => {
             const fileRes = await makeQuery(`/listTmp/${name.replace('.json', '')}`)
+            if (!fileRes) {
+              throw new Error('fileRes is undefined')
+            }
             const fileResData = fileRes.data[0]
             return fileResData.meta
           }),
@@ -44,6 +50,9 @@ export const useFilesStore = defineStore('fileStore', {
       this.status = 'loading'
       try {
         const fileRes = await makeQuery(`/listTmp/${name.replace('.json', '')}`)
+        if (!fileRes) {
+          throw new Error('fileRes is undefined')
+        }
         const fileResDataMeta = fileRes.data[0].meta
         const filtered = this.files.filter((item) => item.name !== name)
         this.files = [...filtered, fileResDataMeta]

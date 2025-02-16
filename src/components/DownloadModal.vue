@@ -33,7 +33,7 @@ function download() {
     class="pi pi-download absolute bg-neutral-900 p-2 bottom-0 right-0 block z-20 text-xs rounded-tl-md"
   ></i>
   <ModelComponent :is-open="showModal" @close="showModal = false">
-    <div class="flex flex-col gap-4 p-4">
+    <div class="flex flex-col gap-4 p-4 w-lg max-w-full">
       <div class="w-full flex gap-2 items-center flex-col">
         <span class="text-lg">Download the json data of this content</span>
 

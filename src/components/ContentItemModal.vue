@@ -10,7 +10,7 @@ const { data, setShowModal, showModal } = defineProps<{
 </script>
 <template>
   <ModelComponent :is-open="showModal" @close="setShowModal(false)">
-    <div class="flex flex-col gap-4 p-4">
+    <div class="flex flex-col gap-4 p-4 w-screen max-w-full">
       <div class="w-full flex gap-2 items-center flex-col relative isolate pt-32 px-2">
         <span
           class="text-lg w-full h-44 bg-neutral-600 absolute top-0 z-0 border-2 rounded-md"

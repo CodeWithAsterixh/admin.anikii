@@ -160,64 +160,42 @@ function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
     Raw
   </button>
   <ModelComponent :is-open="showModal" @close="showModal = false">
-    <div class="w-full !mb-4">
-      <h2>{{ title }}</h2>
-    </div>
-    <div class="flex flex-col gap-4 w-fit max-w-full">
-      <div class="w-full p-4 bg-neutral-950 rounded-md">
-        <div
-          v-html="syntaxHighlight(currentColorPalette, file)"
-          class="text-white max-h-[70vh] max-w-full overflow-auto scroller whitespace-pre-wrap font-mono text-sm"
-        ></div>
+    <div class="w-full flex gap-2 flex-col h-[80vh]">
+      <div class="w-full !mb-2 shrink-0">
+        <h2>{{ title }}</h2>
       </div>
+      <div class="flex flex-col gap-4 w-fit max-w-full h-[70%] min-[498px]:h-[75%] shrink">
+        <div class="w-full p-4 bg-neutral-950 rounded-md h-full">
+          <div
+            v-html="syntaxHighlight(currentColorPalette, file)"
+            class="text-white h-full max-w-full overflow-auto scroller whitespace-pre-wrap font-mono text-sm"
+          ></div>
+        </div>
 
-      <ul
-        class="w-full p-2 flex items-center gap-2 overflow-x-auto no_scroller snap-x snap-mandatory"
-      >
-        <li
-          v-for="(colorKey, i) in Object.keys(jsonSyntaxPalettes)"
-          :key="i"
-          class="size-10 rounded-md cursor-pointer shrink-0 snap-start border-black duration-500"
-          :title="`${colorKey} palette`"
-          :style="{
-            backgroundColor: jsonSyntaxPalettes[colorKey]['key'],
-            borderWidth:
-              currentColorPalette.key == jsonSyntaxPalettes[colorKey]['key'] ? '5px' : '',
-          }"
-          @click="setCurrentColorPalette(jsonSyntaxPalettes[colorKey], colorKey)"
-        ></li>
-      </ul>
-      <span class="block text-neutral-500"
-        >Selected color template:
-        <b class="capitalize text-neutral-100">{{
-          currentPaletteName.split('_').join(' ')
-        }}</b></span
-      >
+        <ul
+          class="w-full p-2 flex items-center shrink-0 gap-2 overflow-x-auto no-scrollbar snap-x snap-mandatory"
+        >
+          <li
+            v-for="(colorKey, i) in Object.keys(jsonSyntaxPalettes)"
+            :key="i"
+            class="size-10 rounded-md cursor-pointer shrink-0 snap-start border-black duration-500"
+            :title="`${colorKey} palette`"
+            :style="{
+              backgroundColor: jsonSyntaxPalettes[colorKey]['key'],
+              borderWidth:
+                currentColorPalette.key == jsonSyntaxPalettes[colorKey]['key'] ? '5px' : '',
+            }"
+            @click="setCurrentColorPalette(jsonSyntaxPalettes[colorKey], colorKey)"
+          ></li>
+        </ul>
+        <span class="block text-neutral-500"
+          >Selected color template:
+          <b class="capitalize text-neutral-100">{{
+            currentPaletteName.split('_').join(' ')
+          }}</b></span
+        >
+      </div>
     </div>
   </ModelComponent>
 </template>
-<style scoped>
-.no_scroller::-webkit-scrollbar {
-  display: none;
-}
-.scroller {
-  padding: 0 10px 10px 0;
-}
-.scroller::-webkit-scrollbar {
-  background-color: oklch(0.205 0 0);
-  width: 5px;
-  height: 5px;
-}
-.scroller::-webkit-scrollbar-thumb {
-  background-color: oklch(0.708 0 0);
-  border-radius: 9999px;
-}
-.scroller::-webkit-scrollbar-track-piece {
-  background-color: oklch(0.269 0 0);
-  border-radius: 5px;
-}
-.scroller::-webkit-scrollbar-corner {
-  background-color: oklch(0.269 0 0);
-  border-bottom-right-radius: 5px;
-}
-</style>
+<style scoped></style>

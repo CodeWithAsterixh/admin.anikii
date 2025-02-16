@@ -79,7 +79,7 @@ async function deleteFile() {
     {{ type === 'delete' ? 'Delete' : 'Save' }}
   </button>
   <ModelComponent :is-open="showModal" @close="showModal = false">
-    <div class="flex flex-col gap-4 p-4">
+    <div class="flex flex-col gap-4 p-4 w-sm">
       <div class="w-full flex gap-2 items-center flex-col">
         <span class="text-lg">Please enter your password to continue</span>
       </div>
