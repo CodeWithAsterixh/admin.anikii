@@ -14,6 +14,7 @@ export default defineConfig({
     // This proxy only runs in development mode with Vite's dev server.
     proxy: {
       '/api': {
+        // target: 'http://localhost:3000',
         target: 'https://api-anikii.onrender.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),

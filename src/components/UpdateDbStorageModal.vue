@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import axios from 'axios'
+import { makeQuery } from '@/helpers/makeQuery'
+import { useFilesStore } from '@/store'
 import { ref } from 'vue'
 import ModelComponent from './ModelComponent.vue'
-import { useFilesStore } from '@/store'
 
 const {
   fileName = '',
@@ -22,10 +22,14 @@ async function store() {
   const pass = import.meta.env.VITE_PASSKEY
   if (inputVal.value === pass) {
     try {
-      await axios.post('/api/savefile', {
-        name: `${fileName}.json`,
-        data: file,
-      })
+      await makeQuery(
+        '/savefile',
+        {
+          name: `${fileName}.json`,
+          data: file,
+        },
+        'POST',
+      )
 
       loadFiles()
 
@@ -43,9 +47,13 @@ async function deleteFile() {
   const pass = import.meta.env.VITE_PASSKEY
   if (inputVal.value === pass) {
     try {
-      await axios.post('/api/delete', {
-        name: `${fileName}.json`,
-      })
+      await makeQuery(
+        '/delete',
+        {
+          name: `${fileName}.json`,
+        },
+        'POST',
+      )
 
       loadFiles()
 
