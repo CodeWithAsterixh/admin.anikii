@@ -7,39 +7,37 @@ export async function makeQuery(
   type: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
 ) {
   try {
-    // for dev only
     if (import.meta.env.DEV) {
+      // Development: directly call the API route with the correct method and payload
       switch (type) {
         case 'GET':
-          return await axios.get(`/api${endpoint}`)
+          return await axios.get(`/api${endpoint}`, { params: data })
         case 'POST':
           return await axios.post(`/api${endpoint}`, data)
-        case 'DELETE':
-          return await axios.delete(`/api${endpoint}`)
         case 'PUT':
-          return await axios.put(`/api${endpoint}`)
-
+          return await axios.put(`/api${endpoint}`, data)
+        case 'DELETE':
+          return await axios.delete(`/api${endpoint}`, { data })
         default:
-          break
+          throw new Error(`Unsupported method: ${type}`)
       }
-    }
-
-    // for prod
-    switch (type) {
-      case 'GET':
-        return await axios.get('/api/proxy', { params: { endpoint } })
-      case 'POST':
-        return await axios.post(
-          `/api/proxy?endpoint=${encodeURIComponent(endpoint)}&type=${type}`,
-          data,
-        )
-      case 'DELETE':
-        return await axios.delete('/api/proxy', { params: { endpoint } })
-      case 'PUT':
-        return await axios.put('/api/proxy', { params: { endpoint } })
-
-      default:
-        break
+    } else {
+      // Production: call the proxy endpoint with query parameters for endpoint and type
+      const encodedEndpoint = encodeURIComponent(endpoint)
+      switch (type) {
+        case 'GET':
+          return await axios.get('/api/proxy', {
+            params: { endpoint: encodedEndpoint, type, ...data },
+          })
+        case 'POST':
+          return await axios.post(`/api/proxy?endpoint=${encodedEndpoint}&type=${type}`, data)
+        case 'PUT':
+          return await axios.put(`/api/proxy?endpoint=${encodedEndpoint}&type=${type}`, data)
+        case 'DELETE':
+          return await axios.delete(`/api/proxy?endpoint=${encodedEndpoint}&type=${type}`, { data })
+        default:
+          throw new Error(`Unsupported method: ${type}`)
+      }
     }
   } catch (error) {
     console.error('API Error:', error)
