@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 
 const mobileMenu = reactive({
@@ -23,10 +23,11 @@ const toggleMenu = () => {
 }
 const goBack = () => {
   router.back()
-  atBeginning.value = window.history.length <= 1
+  atBeginning.value = window.history.length <= 2 || route.name == 'home'
 }
-onMounted(() => {
-  atBeginning.value = window.history.length <= 1
+
+watch(route, () => {
+  atBeginning.value = window.history.length <= 2 || route.name == 'home'
 })
 </script>
 <template>

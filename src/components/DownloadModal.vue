@@ -69,7 +69,12 @@ function download() {
         <button class="w-full p-2 bg-neutral-600 rounded-md" @click="showModal = false">
           cancel
         </button>
-        <button @click="download" class="w-full p-2 bg-black rounded-md">Download</button>
+        <button
+          @click="download"
+          class="w-full p-2 bg-black rounded-md flex items-center justify-center gap-2"
+        >
+          <i class="pi pi-download"></i> Download
+        </button>
         <UpdateDbStorageModal
           :type="from === 'db' ? 'delete' : 'save'"
           :file="file.contents"

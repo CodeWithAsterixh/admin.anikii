@@ -8,7 +8,7 @@ import { useRoute } from 'vue-router'
 const router = useRoute()
 
 const { $state } = useFilesStore()
-const file = $state.files.find((file) => (file.name = `${router.params.name}.json`))
+const file = $state.files.find((file) => file.name === `${router.params.name}.json`)
 
 const fileData = reactive<{
   data?: PagesStructure | string[]

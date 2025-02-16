@@ -34,6 +34,8 @@ export const useFilesStore = defineStore('fileStore', {
       } catch (error) {
         // let the form component display the error
         this.status = 'error'
+        console.log(error)
+
         return error
       } finally {
       }
@@ -54,7 +56,10 @@ export const useFilesStore = defineStore('fileStore', {
       }
     },
     setCurrentlyViewed(animeList?: AnimeListItem[]) {
+      this.status = 'loading'
+      this.currentlyViewed = []
       this.currentlyViewed = animeList
+      this.status = 'done'
     },
   },
 })

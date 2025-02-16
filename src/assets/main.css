@@ -20,7 +20,7 @@ body {
   @apply box-border;
 }
 button {
-  @apply active:scale-95 duration-300;
+  @apply active:scale-95 duration-300 cursor-pointer;
 }
 
 @keyframes slideFLeft {
