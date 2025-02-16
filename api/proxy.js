@@ -11,9 +11,13 @@ export default async function handler(req, res) {
 
     let response
 
-    if (type === 'get') {
+    if (type.toLowerCase() === 'get') {
       response = await axios.get(apiUrl)
-    } else if (type === 'post' || type === 'put' || type === 'delete') {
+    } else if (
+      type.toLowerCase() === 'post' ||
+      type.toLowerCase() === 'put' ||
+      type.toLowerCase() === 'delete'
+    ) {
       response = await axios.post(apiUrl, req.body)
     } else {
       return res
