@@ -80,11 +80,20 @@ async function deleteFile() {
   </button>
   <ModelComponent :is-open="showModal" @close="showModal = false">
     <div class="flex flex-col gap-4 p-4 w-sm">
-      <div class="w-full flex gap-2 items-center flex-col">
-        <span class="text-lg">Please enter your password to continue</span>
+      <h1 class="text-xl font-bold">Admin access only</h1>
+      <div class="w-full flex gap-2 flex-col">
+        <div class="w-full flex flex-col">
+          <b class="text-sm"
+            >Saving as: <i class="text-blue-300 not-italic">{{ fileName }}</i></b
+          >
+          <em class="text-xs text-amber-300 not-italic"
+            >You can't change the name of this file on the store</em
+          >
+        </div>
+        <b class="text-base">Please enter your password to continue</b>
       </div>
       <label for="name" class="flex flex-col gap-2">
-        <span class="text-lg">Password:</span>
+        <span class="text-base">Password:</span>
         <div class="w-full flex gap-1 justify-between flex-col">
           <div class="w-full flex items-center border-2 border-neutral-500 rounded-md">
             <input

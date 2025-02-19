@@ -78,7 +78,7 @@ function download() {
         <UpdateDbStorageModal
           :type="from === 'db' ? 'delete' : 'save'"
           :file="file.contents"
-          :file-name="inputVal"
+          :file-name="fileName"
         />
       </div>
     </div>

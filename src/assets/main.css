@@ -17,7 +17,7 @@ body {
   @apply bg-neutral-800 text-white p-0 m-0;
 }
 * {
-  @apply box-border duration-300;
+  @apply !box-border duration-300;
 }
 button {
   @apply active:scale-95 duration-300 cursor-pointer;

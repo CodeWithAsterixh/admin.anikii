@@ -3,7 +3,7 @@
     <Transition name="fade">
       <div
         v-if="isOpen"
-        class="fixed inset-0 flex items-center justify-center bg-black/50 z-50 px-4"
+        class="fixed w-screen h-screen !box-border inset-0 flex items-center justify-center bg-black/50 z-50 px-4"
         @click="close"
       >
         <div

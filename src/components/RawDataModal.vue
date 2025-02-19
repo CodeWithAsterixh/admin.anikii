@@ -160,15 +160,15 @@ function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
     Raw
   </button>
   <ModelComponent :is-open="showModal" @close="showModal = false">
-    <div class="w-full flex gap-2 flex-col h-[80vh]">
+    <div class="w-full flex gap-2 flex-col h-full">
       <div class="w-full !mb-2 shrink-0">
         <h2>{{ title }}</h2>
       </div>
-      <div class="flex flex-col gap-4 w-fit max-w-full h-[70%] min-[498px]:h-[75%] shrink">
-        <div class="w-full p-4 bg-neutral-950 rounded-md h-full">
+      <div class="flex flex-col gap-4 w-fit max-w-full h-full shrink">
+        <div class="w-full p-4 bg-neutral-950 rounded-md shrink">
           <div
             v-html="syntaxHighlight(currentColorPalette, file)"
-            class="text-white h-full max-w-full overflow-auto scroller whitespace-pre-wrap font-mono text-sm"
+            class="text-white h-full max-h-[55vh] max-w-full overflow-auto scroller whitespace-pre-wrap font-mono text-sm"
           ></div>
         </div>
 
@@ -188,7 +188,7 @@ function syntaxHighlight(palette: JsonSyntaxPalette, json?: object) {
             @click="setCurrentColorPalette(jsonSyntaxPalettes[colorKey], colorKey)"
           ></li>
         </ul>
-        <span class="block text-neutral-500"
+        <span class="block shrink-0 text-neutral-500"
           >Selected color template:
           <b class="capitalize text-neutral-100">{{
             currentPaletteName.split('_').join(' ')
