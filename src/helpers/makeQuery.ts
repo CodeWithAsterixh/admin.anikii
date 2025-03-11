@@ -17,7 +17,7 @@ export async function makeQuery(
         case 'PUT':
           return await axios.put(`/api${endpoint}`, data)
         case 'DELETE':
-          return await axios.delete(`/api${endpoint}`, { data })
+          return await axios.delete(`/api${endpoint}`)
         default:
           throw new Error(`Unsupported method: ${type}`)
       }
@@ -34,7 +34,7 @@ export async function makeQuery(
         case 'PUT':
           return await axios.put(`/api/proxy?endpoint=${encodedEndpoint}&type=${type}`, data)
         case 'DELETE':
-          return await axios.delete(`/api/proxy?endpoint=${encodedEndpoint}&type=${type}`, { data })
+          return await axios.delete(`/api/proxy?endpoint=${encodedEndpoint}&type=${type}`)
         default:
           throw new Error(`Unsupported method: ${type}`)
       }

@@ -11,7 +11,7 @@ const {
 } = defineProps<{
   fileName: string
   file: object
-  type: 'save' | 'delete'
+  type: 'save' | 'delete' | 'update'
 }>()
 const showModal = ref(false)
 const inputVal = ref('')
@@ -47,13 +47,7 @@ async function deleteFile() {
   const pass = import.meta.env.VITE_PASSKEY
   if (inputVal.value === pass) {
     try {
-      await makeQuery(
-        '/delete',
-        {
-          name: `${fileName}.json`,
-        },
-        'POST',
-      )
+      await makeQuery(`/saved/${fileName}.json?storage=db`, {}, 'DELETE')
 
       loadFiles()
 
@@ -92,12 +86,12 @@ async function deleteFile() {
         </div>
         <b class="text-base">Please enter your password to continue</b>
       </div>
-      <label for="name" class="flex flex-col gap-2">
+      <label for="password" class="flex flex-col gap-2">
         <span class="text-base">Password:</span>
         <div class="w-full flex gap-1 justify-between flex-col">
           <div class="w-full flex items-center border-2 border-neutral-500 rounded-md">
             <input
-              id="name"
+              id="password"
               placeholder="password"
               :type="!showPass ? 'password' : 'text'"
               class="w-full p-2 outline-none"

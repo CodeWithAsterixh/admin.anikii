@@ -7,8 +7,9 @@ import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import ContentItemModal from './ContentItemModal.vue'
 import DownloadModal from './DownloadModal.vue'
+import { useFilesStore } from '@/store'
 
-const { data } = defineProps<{ data?: _fileInfo }>()
+const { data, from } = defineProps<{ data?: _fileInfo; from: 'db' | 'local' }>()
 const contentData = ref<PagesStructure | string[] | AnimeListItem>()
 const showModal = ref(false)
 const handleDownload = async (name: string) => {
@@ -16,12 +17,22 @@ const handleDownload = async (name: string) => {
     downloadJSON(contentData.value, `${name}.json`)
   }
 }
+const { $state } = useFilesStore()
+const isInDb = ref(false)
+const shouldUpdateDb = ref(false)
 onMounted(async () => {
   try {
-    const fileRes = await makeQuery(`/listTmp/${data?.name.replace('.json', '')}`)
+    const fileRes = await makeQuery(`/saved/${data?.name.replace('.json', '')}`)
     const fileResData: PagesStructure | string[] | AnimeListItem = fileRes?.data[0].data
     if (fileRes?.data[0].meta) {
       contentData.value = fileResData
+    }
+    const findDb = $state.files.db.find((d) => d.name === data?.name)
+    if (findDb && data) {
+      isInDb.value = true
+      if (data?.total > findDb.total) {
+        shouldUpdateDb.value = true
+      }
     }
     // downloadJSON(fileResData, `${modalName.value}.json`)
   } catch (error) {
@@ -55,7 +66,7 @@ onMounted(async () => {
           thumbnail: data?.thumbnail ? data.thumbnail : '',
           contents: contentData,
         }"
-        :from="data?.from || 'temp'"
+        :from="from"
       />
       <span class="absolute bg-neutral-900 p-2 top-0 right-0 block z-20 text-xs rounded-bl-md"
         >Total: {{ data?.total }}</span
@@ -84,7 +95,7 @@ onMounted(async () => {
   </div>
   <RouterLink
     v-else
-    :to="`/files/${data?.name.replace('.json', '')}`"
+    :to="`/files/${data?.name.replace('.json', '')}${from === 'db' ? '?s=d' : '?s=l'}`"
     class="flex flex-col gap-2 items-center shadow-md rounded-md overflow-hidden bg-neutral-900"
   >
     <span class="h-44 w-full bg-neutral-100/30 relative isolate">
@@ -107,7 +118,7 @@ onMounted(async () => {
           thumbnail: data?.thumbnail ? data.thumbnail : '',
           contents: contentData,
         }"
-        :from="data?.from || 'temp'"
+        :from="from"
       />
       <span class="absolute bg-neutral-900 p-2 top-0 right-0 block z-20 text-xs rounded-bl-md"
         >Total: {{ data?.total }}</span

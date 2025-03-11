@@ -6,6 +6,7 @@ import { useFilesStore } from '@/store'
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 const router = useRoute()
+const { s } = router.query as { s: 'l' | 'd' } // for storage l=local, d=db
 
 const { name, page } = router.params
 
@@ -16,7 +17,7 @@ onMounted(async () => {
   if (!$state.currentlyViewed) {
     $state.status = 'loading'
     try {
-      const fileRes = await makeQuery(`/listTmp/${name}`)
+      const fileRes = await makeQuery(`/saved/${name}?storage=${s === 'd' ? 'db' : 'local'}`)
       const fileResData: PagesStructure = fileRes?.data[0].data
       if (Object.keys(fileResData).length === 0) {
         $state.isEmpty = true
@@ -36,7 +37,7 @@ onMounted(async () => {
 
 <template>
   <main
-    v-if="$state.currentlyViewed && !$state.isEmpty"
+    v-if="$state.currentlyViewed && $state.currentlyViewed?.length > 0"
     class="w-full grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] p-2 gap-2"
   >
     <ContentItem

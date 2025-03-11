@@ -17,7 +17,7 @@ const {
     type: string
     contents: object
   }
-  from?: 'db' | 'temp'
+  from?: 'db' | 'local'
 }>()
 const showModal = ref(false)
 const inputVal = ref(fileName.replace('.json', ''))

@@ -11,3 +11,13 @@ export interface _fileInfo {
   thumbnail: string | null
   from: 'temp' | 'db'
 }
+
+export interface storages {
+  db: _fileInfo[]
+  local: _fileInfo[]
+}
+
+export interface storagesNames {
+  db: string[]
+  local: string[]
+}

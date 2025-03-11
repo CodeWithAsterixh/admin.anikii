@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue'
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { reactive } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
 
 const mobileMenu = reactive({
   shown: false,
@@ -8,8 +8,6 @@ const mobileMenu = reactive({
 })
 
 const route = useRoute()
-const router = useRouter()
-const atBeginning = ref(true)
 const toggleMenu = () => {
   if (mobileMenu.shown) {
     mobileMenu.animation = 'out'
@@ -21,14 +19,7 @@ const toggleMenu = () => {
     mobileMenu.animation = 'in'
   }
 }
-const goBack = () => {
-  router.back()
-  atBeginning.value = window.history.length <= 2 || route.name == 'home'
-}
 
-watch(route, () => {
-  atBeginning.value = window.history.length <= 2 || route.name == 'home'
-})
 </script>
 <template>
   <header
@@ -36,9 +27,7 @@ watch(route, () => {
   >
     <!-- logo -->
     <strong class="text-lg">
-      <button v-if="!atBeginning" @click="goBack" class="w-fit p-0 text-lg !mr-4">
-        <i class="pi pi-arrow-left"></i>
-      </button>
+      
       Anikii Archive</strong
     >
     <nav class="hidden min-[498px]:flex items-center gap-2">

@@ -6,9 +6,14 @@ import { useFilesStore } from '@/store'
 import { onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 const router = useRoute()
+const { s } = router.query as { s: 'l' | 'd' } // for storage l=local, d=db
 
 const { $state } = useFilesStore()
-const file = $state.files.find((file) => file.name === `${router.params.name}.json`)
+
+const file =
+  s === 'd'
+    ? $state.files.db.find((file) => file.name === `${router.params.name}.json`)
+    : $state.files.local.find((file) => file.name === `${router.params.name}.json`)
 
 const fileData = reactive<{
   data?: PagesStructure | string[]
@@ -17,7 +22,7 @@ const fileData = reactive<{
 onMounted(async () => {
   if (file) {
     try {
-      const fileRes = await makeQuery(`/listTmp/${file.name.replace('.json', '')}`)
+      const fileRes = await makeQuery(`/saved/${file.name.replace('.json', '')}`)
       const fileResData: PagesStructure | string[] = fileRes?.data[0]?.data || []
       fileData.data = fileResData
     } catch (error) {
@@ -62,7 +67,7 @@ onMounted(async () => {
         :key="key"
         :data="fileData.data.pages[key]"
         :file-name="`${router.params.name}_page_${key}`"
-        :link="`/files/${router.params.name}/page_${key}`"
+        :link="`/files/${router.params.name}/page_${key}?s=${s}`"
         class="flex flex-col gap-2 items-center shadow-md rounded-md overflow-hidden bg-neutral-900"
       />
     </div>

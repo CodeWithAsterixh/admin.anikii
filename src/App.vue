@@ -2,7 +2,6 @@
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import ErrorComponent from './components/ErrorComponent.vue'
-import IsEmpty from './components/IsEmpty.vue'
 import LoadingComponent from './components/LoadingComponent.vue'
 import NavBar from './components/NavBar.vue'
 import { useFilesStore } from './store'
@@ -17,7 +16,6 @@ onMounted(() => {
   <NavBar />
 
   <RouterView v-if="$state.files && $state.status === 'done'" />
-  <IsEmpty />
   <LoadingComponent />
   <ErrorComponent />
 </template>
